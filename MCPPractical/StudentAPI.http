@@ -1,0 +1,47 @@
+### Get all students
+GET https://localhost:7001/students
+
+###
+
+### Get student by ID
+GET https://localhost:7001/students/1
+
+###
+
+### Create new student
+POST https://localhost:7001/students
+Content-Type: application/json
+
+{
+  "id": 4,
+  "name": "Alice Williams",
+  "math": 95,
+  "science": 88,
+  "english": 92
+}
+
+###
+
+### Update existing student
+PUT https://localhost:7001/students/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "John Doe",
+  "math": 90,
+  "science": 95,
+  "english": 93
+}
+
+###
+
+### Delete student
+DELETE https://localhost:7001/students/3
+
+###
+
+### Get student average score
+GET https://localhost:7001/students/1/average
+
+###
