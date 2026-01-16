@@ -11,16 +11,16 @@ public static class StudentEndpoints
             .WithTags("Students");
 
         // GET all students
-        group.MapGet("/", (StudentStorage storage) =>
+        group.MapGet("/", (IStudentService service) =>
         {
-            return Results.Ok(storage.GetAll());
+            return Results.Ok(service.GetAll());
         })
         .WithName("GetAllStudents");
 
         // GET student by ID
-        group.MapGet("/{id}", (int id, StudentStorage storage) =>
+        group.MapGet("/{id}", (int id, IStudentService service) =>
         {
-            var student = storage.GetById(id);
+            var student = service.GetById(id);
             if (student != null)
             {
                 return Results.Ok(student);
@@ -30,9 +30,9 @@ public static class StudentEndpoints
         .WithName("GetStudentById");
 
         // POST create new student
-        group.MapPost("/", (Student student, StudentStorage storage) =>
+        group.MapPost("/", (Student student, IStudentService service) =>
         {
-            if (!storage.Add(student))
+            if (!service.Add(student))
             {
                 return Results.Conflict($"Student with ID {student.Id} already exists");
             }
@@ -42,21 +42,21 @@ public static class StudentEndpoints
         .WithName("CreateStudent");
 
         // PUT update existing student
-        group.MapPut("/{id}", (int id, Student updatedStudent, StudentStorage storage) =>
+        group.MapPut("/{id}", (int id, Student updatedStudent, IStudentService service) =>
         {
-            if (!storage.Update(id, updatedStudent))
+            if (!service.Update(id, updatedStudent))
             {
                 return Results.NotFound($"Student with ID {id} not found");
             }
 
-            return Results.Ok(storage.GetById(id));
+            return Results.Ok(service.GetById(id));
         })
         .WithName("UpdateStudent");
 
         // DELETE student
-        group.MapDelete("/{id}", (int id, StudentStorage storage) =>
+        group.MapDelete("/{id}", (int id, IStudentService service) =>
         {
-            if (!storage.Delete(id))
+            if (!service.Delete(id))
             {
                 return Results.NotFound($"Student with ID {id} not found");
             }
@@ -66,12 +66,12 @@ public static class StudentEndpoints
         .WithName("DeleteStudent");
 
         // GET student average score
-        group.MapGet("/{id}/average", (int id, StudentStorage storage) =>
+        group.MapGet("/{id}/average", (int id, IStudentService service) =>
         {
-            var student = storage.GetById(id);
+            var student = service.GetById(id);
             if (student != null)
             {
-                var average = (student.Math + student.Science + student.English) / 3.0;
+                var average = service.CalculateAverage(student);
                 return Results.Ok(new { StudentId = id, Name = student.Name, AverageScore = average });
             }
             return Results.NotFound($"Student with ID {id} not found");

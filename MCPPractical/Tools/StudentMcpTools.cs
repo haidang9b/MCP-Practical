@@ -5,21 +5,20 @@ using System.ComponentModel;
 
 namespace MCPPractical.Tools;
 
-
 [McpServerToolType]
 public class StudentMcpTools
 {
-    private readonly StudentStorage _storage;
+    private readonly IStudentService _service;
 
-    public StudentMcpTools(StudentStorage storage)
+    public StudentMcpTools(IStudentService service)
     {
-        _storage = storage;
+        _service = service;
     }
 
     [McpServerTool, Description("Get all students from the student list.")]
     public Task<List<Student>> GetStudentsAsync()
     {
-        return Task.FromResult(_storage.GetAll().ToList());
+        return Task.FromResult(_service.GetAll().ToList());
     }
 
     [McpServerTool, Description("Calculate the average score of a student")]
@@ -27,26 +26,20 @@ public class StudentMcpTools
         [Description("Fiter by student name: return 0.0 if not found, else return the average score")]
         string name)
     {
-        var students = _storage.GetAll();
+        var students = _service.GetAll();
 
         var student = students.FirstOrDefault(x => x.Name == name);
 
         if (student is null)
             return Task.FromResult(0.0);
 
-        var average = (student.Math + student.Science + student.English) / 3.0;
-
-        return Task.FromResult(average);
+        return Task.FromResult(_service.CalculateAverage(student));
     }
 
     [McpServerTool, Description("Get the best student from the student list")]
     public Task<Student?> GetBestStudentAsync()
     {
-        var students = _storage.GetAll();
-
-        var best = students.OrderByDescending(x => (x.Math + x.Science + x.English) / 3.0).FirstOrDefault();
-
-        return Task.FromResult(best);
+        return Task.FromResult(_service.GetBestStudent());
     }
 
     [McpServerTool, Description("Add a new student to the list")]
@@ -58,7 +51,7 @@ public class StudentMcpTools
         [Description("English Score")] int english)
     {
         var student = new Student(id, name, math, science, english);
-        if (_storage.Add(student))
+        if (_service.Add(student))
         {
             return Task.FromResult($"Student {name} added successfully.");
         }
@@ -74,7 +67,7 @@ public class StudentMcpTools
          [Description("New English Score")] int english)
     {
         var student = new Student(id, name, math, science, english);
-        if (_storage.Update(id, student))
+        if (_service.Update(id, student))
         {
             return Task.FromResult($"Student {id} updated successfully.");
         }

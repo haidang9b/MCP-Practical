@@ -50,6 +50,7 @@ builder.Services
 
 // Register StudentStorage as a singleton
 builder.Services.AddSingleton<StudentStorage>();
+builder.Services.AddSingleton<IStudentService, StudentService>();
 
 var app = builder.Build();
 

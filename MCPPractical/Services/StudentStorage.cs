@@ -1,5 +1,5 @@
-using System.Collections.Concurrent;
 using MCPPractical.Models;
+using System.Collections.Concurrent;
 
 namespace MCPPractical.Services;
 
@@ -51,7 +51,7 @@ public class StudentStorage
         {
             return false;
         }
-        
+
         _students[id] = student with { Id = id };
         return true;
     }
