@@ -10,6 +10,8 @@ The purpose of this application is to demonstrate how to expose C# tools and res
 
 -   **Student Management**: Add and update student records with scores in Math, Science, and English.
 -   **Data Analysis**: Calculate average scores and identify top-performing students.
+-   **Exchange Rate Information**: Retrieve current exchange rates based on USD.
+-   **Time Services**: Get the current server date and time.
 -   **MCP Integration**: Fully compliant with the Model Context Protocol, exposing tools for easy consumption.
 
 ## Available Tools
@@ -44,6 +46,14 @@ Updates an existing student's details.
     -   `science` (int): New Science score.
     -   `english` (int): New English score.
 
+### 6. `GetCurrentExchangeRateAsync`
+Get current exchange rate base on currency USD.
+-   **Arguments**:
+    -   `currency` (string): Currency code (e.g., "SGD", "EUR").
+
+### 7. `GetCurrentDateTimeAsync`
+Get current date and time.
+
 ## Getting Started
 
 ### Prerequisites
@@ -66,6 +76,8 @@ Updates an existing student's details.
 
 ## Project Structure
 
--   `Tools/StudentMcpTools.cs`: Contains the implementation of the MCP tools.
+-   `Tools/StudentMcpTools.cs`: Contains the implementation of the student management MCP tools.
+-   `Tools/ExchangeRateMcpTools.cs`: Contains the implementation of the exchange rate MCP tools.
+-   `Tools/DateTimeMcpTools.cs`: Contains the implementation of the date/time MCP tools.
 -   `Services/StudentStorage.cs`: A thread-safe singleton service for in-memory data storage.
 -   `Models/Student.cs`: The data model representing a student.
