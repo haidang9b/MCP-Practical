@@ -1,7 +1,7 @@
 using MCPPractical.Models;
 using System.Collections.Concurrent;
 
-namespace MCPPractical.Services;
+namespace MCPPractical.Storages;
 
 /// <summary>
 /// Singleton service to manage student data storage using a thread-safe ConcurrentDictionary
